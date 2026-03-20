@@ -34,6 +34,10 @@
 <div class="container mt-4">
     <h2 class="mb-3">Trajets proposés</h2>
 
+    <?php if (!isset($_SESSION['user'])): ?>
+        <p class="lead">Pour obtenir plus d'informations sur un trajet, veuillez vous connecter</p>
+    <?php endif; ?>
+
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
             <tr>
@@ -44,7 +48,7 @@
                 <th>Date</th>
                 <th>Heure</th>
                 <th>Places</th>
-                <th></th>
+                <?php if (isset($_SESSION['user'])): ?><th></th><?php endif; ?>
             </tr>
         </thead>
         <tbody>
@@ -57,15 +61,41 @@
                 <td><?= date('d/m/Y', strtotime($trajet['datetime_arrivee'])) ?></td>
                 <td><?= date('H:i', strtotime($trajet['datetime_arrivee'])) ?></td>
                 <td><?= (int) $trajet['places_dispo'] ?></td>
+                <?php if (isset($_SESSION['user'])): ?>
                 <td class="text-nowrap">
-                    <?php if (isset($_SESSION['user']) && $_SESSION['user']['id'] === $trajet['utilisateur_id']): ?>
+                    <button type="button" class="btn btn-link p-0" title="Voir"
+                            data-bs-toggle="modal" data-bs-target="#modal-<?= (int) $trajet['id'] ?>">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <?php if ($_SESSION['user']['id'] === $trajet['utilisateur_id']): ?>
                         <a href="/touche-pas-au-klaxon/public/trajet/edit/<?= (int) $trajet['id'] ?>" class="ms-1" title="Modifier"><i class="bi bi-pencil-square"></i></a>
                         <form action="/touche-pas-au-klaxon/public/trajet/delete/<?= (int) $trajet['id'] ?>" method="POST" class="d-inline ms-1">
                             <button type="submit" class="btn btn-link p-0" title="Supprimer"><i class="bi bi-trash text-danger"></i></button>
                         </form>
                     <?php endif; ?>
                 </td>
+                <?php endif; ?>
             </tr>
+
+            <!-- Modale trajet #<?= (int) $trajet['id'] ?> -->
+            <div class="modal fade" id="modal-<?= (int) $trajet['id'] ?>" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <button type="button" class="btn-close float-end" data-bs-dismiss="modal"></button>
+                            <h5 class="mb-3"><?= htmlspecialchars($trajet['agence_depart']) ?> → <?= htmlspecialchars($trajet['agence_arrivee']) ?></h5>
+                            <p><strong>Auteur :</strong> <?= htmlspecialchars($trajet['user_prenom'] . ' ' . $trajet['user_nom']) ?></p>
+                            <p><strong>Téléphone :</strong> <?= htmlspecialchars($trajet['user_telephone']) ?></p>
+                            <p><strong>Email :</strong> <?= htmlspecialchars($trajet['user_email']) ?></p>
+                            <p><strong>Nombre total de places :</strong> <?= (int) $trajet['places_total'] ?></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <?php endforeach; ?>
         </tbody>
     </table>
@@ -75,5 +105,6 @@
     &copy; 2024 - CENEF - MVC PHP
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
