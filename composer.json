@@ -1,0 +1,19 @@
+{
+  "name": "alexiszrnhlt/touche-pas-au-klaxon",
+  "description": "Application de covoiturage interne",
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Alexiszrnhlt\\TouchePasAuKlaxon\\": "app/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Alex.ZIRNHELT",
+      "email": "alexis.zirnhelt@gmail.com"
+    }
+  ],
+"require": {
+    "izniburak/router": "dev-master"
+  }
+}
