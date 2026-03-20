@@ -19,6 +19,16 @@
 <div class="container mt-5" style="max-width: 540px;">
     <h2 class="mb-4">Créer un trajet</h2>
 
+    <?php if (!empty($errors)): ?>
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                <?php foreach ($errors as $error): ?>
+                    <li><?= htmlspecialchars($error) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+
     <form action="/touche-pas-au-klaxon/public/trajet/create" method="POST">
         <div class="mb-3">
             <label for="agence_depart_id" class="form-label">Agence de départ</label>
