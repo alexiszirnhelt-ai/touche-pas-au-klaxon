@@ -36,6 +36,32 @@ class TrajetController
     {
         $this->requireAuth();
 
+        $errors = [];
+
+        if (empty($_POST['agence_depart_id']) || empty($_POST['agence_arrivee_id']) ||
+            empty($_POST['datetime_depart'])   || empty($_POST['datetime_arrivee'])   ||
+            empty($_POST['places_total'])) {
+            $errors[] = 'Tous les champs sont obligatoires.';
+        }
+
+        if ($_POST['agence_depart_id'] === $_POST['agence_arrivee_id']) {
+            $errors[] = "L'agence de départ et d'arrivée doivent être différentes.";
+        }
+
+        if ($_POST['datetime_arrivee'] <= $_POST['datetime_depart']) {
+            $errors[] = "La date d'arrivée doit être après la date de départ.";
+        }
+
+        if ((int) $_POST['places_total'] < 1) {
+            $errors[] = 'Le nombre de places doit être supérieur à 0.';
+        }
+
+        if (!empty($errors)) {
+            $agences = (new Agence())->getAll();
+            require_once __DIR__ . '/../Views/trajet/create.php';
+            return;
+        }
+
         $model = new Trajet();
         $model->create([
             'agence_depart_id'  => (int) $_POST['agence_depart_id'],
@@ -78,6 +104,32 @@ class TrajetController
         if (!$trajet || $trajet['utilisateur_id'] !== $_SESSION['user']['id']) {
             header('Location: /touche-pas-au-klaxon/public/');
             exit;
+        }
+
+        $errors = [];
+
+        if (empty($_POST['agence_depart_id']) || empty($_POST['agence_arrivee_id']) ||
+            empty($_POST['datetime_depart'])   || empty($_POST['datetime_arrivee'])   ||
+            empty($_POST['places_total'])) {
+            $errors[] = 'Tous les champs sont obligatoires.';
+        }
+
+        if ($_POST['agence_depart_id'] === $_POST['agence_arrivee_id']) {
+            $errors[] = "L'agence de départ et d'arrivée doivent être différentes.";
+        }
+
+        if ($_POST['datetime_arrivee'] <= $_POST['datetime_depart']) {
+            $errors[] = "La date d'arrivée doit être après la date de départ.";
+        }
+
+        if ((int) $_POST['places_total'] < 1) {
+            $errors[] = 'Le nombre de places doit être supérieur à 0.';
+        }
+
+        if (!empty($errors)) {
+            $agences = (new Agence())->getAll();
+            require_once __DIR__ . '/../Views/trajet/edit.php';
+            return;
         }
 
         $model->update($id, [
