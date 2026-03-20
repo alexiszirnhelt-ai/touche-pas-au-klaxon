@@ -40,5 +40,7 @@ $router->post('/admin/agences/create',      'AdminController@storeAgence');
 $router->get('/admin/agences/edit/:id',     'AdminController@editAgence');
 $router->post('/admin/agences/edit/:id',    'AdminController@updateAgence');
 $router->post('/admin/agences/delete/:id',  'AdminController@deleteAgence');
+$router->get('/admin/trajets',              'AdminController@trajets');
+$router->post('/admin/trajets/delete/:id',  'AdminController@deleteTrajet');
 
 $router->run();
