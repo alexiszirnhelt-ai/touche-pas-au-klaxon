@@ -13,14 +13,23 @@
     <span class="navbar-brand fw-bold">Touche pas au klaxon</span>
     <div class="d-flex align-items-center gap-3">
         <?php if (isset($_SESSION['user'])): ?>
-            <a href="/trajet/create" class="btn btn-dark">Créer un trajet</a>
+            <a href="/touche-pas-au-klaxon/public/trajet/create" class="btn btn-dark">Créer un trajet</a>
             <span>Bonjour <?= htmlspecialchars($_SESSION['user']['prenom'] . ' ' . $_SESSION['user']['nom']) ?></span>
-            <a href="/logout" class="btn btn-dark">Déconnexion</a>
+            <a href="/touche-pas-au-klaxon/public/logout" class="btn btn-dark">Déconnexion</a>
         <?php else: ?>
-            <a href="/login" class="btn btn-dark">Connexion</a>
+            <a href="/touche-pas-au-klaxon/public/login" class="btn btn-dark">Connexion</a>
         <?php endif; ?>
     </div>
 </nav>
+
+<?php if (isset($_SESSION['flash'])): ?>
+    <div class="container mt-3">
+        <div class="alert alert-secondary">
+            <?= htmlspecialchars($_SESSION['flash']) ?>
+        </div>
+    </div>
+    <?php unset($_SESSION['flash']); ?>
+<?php endif; ?>
 
 <div class="container mt-4">
     <h2 class="mb-3">Trajets proposés</h2>
@@ -49,10 +58,9 @@
                 <td><?= date('H:i', strtotime($trajet['datetime_arrivee'])) ?></td>
                 <td><?= (int) $trajet['places_dispo'] ?></td>
                 <td class="text-nowrap">
-                    <a href="/trajet/<?= (int) $trajet['id'] ?>" title="Voir"><i class="bi bi-eye"></i></a>
                     <?php if (isset($_SESSION['user']) && $_SESSION['user']['id'] === $trajet['utilisateur_id']): ?>
-                        <a href="/trajet/edit/<?= (int) $trajet['id'] ?>" class="ms-1" title="Modifier"><i class="bi bi-pencil-square"></i></a>
-                        <form action="/trajet/delete/<?= (int) $trajet['id'] ?>" method="POST" class="d-inline ms-1">
+                        <a href="/touche-pas-au-klaxon/public/trajet/edit/<?= (int) $trajet['id'] ?>" class="ms-1" title="Modifier"><i class="bi bi-pencil-square"></i></a>
+                        <form action="/touche-pas-au-klaxon/public/trajet/delete/<?= (int) $trajet['id'] ?>" method="POST" class="d-inline ms-1">
                             <button type="submit" class="btn btn-link p-0" title="Supprimer"><i class="bi bi-trash text-danger"></i></button>
                         </form>
                     <?php endif; ?>
