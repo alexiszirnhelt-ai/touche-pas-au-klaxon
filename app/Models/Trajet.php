@@ -60,6 +60,27 @@ class Trajet
         ]);
     }
 
+    public function getByIdWithUser(int $id): array|false
+    {
+        $stmt = $this->pdo->prepare('
+            SELECT t.*,
+                   a1.nom AS agence_depart,
+                   a2.nom AS agence_arrivee,
+                   u.nom AS user_nom,
+                   u.prenom AS user_prenom,
+                   u.telephone AS user_telephone,
+                   u.email AS user_email
+            FROM trajet t
+            JOIN agence a1 ON t.agence_depart_id = a1.id
+            JOIN agence a2 ON t.agence_arrivee_id = a2.id
+            JOIN utilisateur u ON t.utilisateur_id = u.id
+            WHERE t.id = ?
+        ');
+        $stmt->execute([$id]);
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
     public function update(int $id, array $data): void
     {
         $stmt = $this->pdo->prepare('
@@ -94,10 +115,15 @@ class Trajet
         $stmt = $this->pdo->query('
             SELECT t.*,
                    a1.nom AS agence_depart,
-                   a2.nom AS agence_arrivee
+                   a2.nom AS agence_arrivee,
+                   u.nom AS user_nom,
+                   u.prenom AS user_prenom,
+                   u.telephone AS user_telephone,
+                   u.email AS user_email
             FROM trajet t
             JOIN agence a1 ON t.agence_depart_id = a1.id
             JOIN agence a2 ON t.agence_arrivee_id = a2.id
+            JOIN utilisateur u ON t.utilisateur_id = u.id
             WHERE t.places_dispo > 0
               AND t.datetime_depart > NOW()
             ORDER BY t.datetime_depart ASC
