@@ -4,7 +4,7 @@
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "Alexiszrnhlt\\TouchePasAuKlaxon\\": "app/"
+      "App\\": "app/"
     }
   },
   "authors": [
