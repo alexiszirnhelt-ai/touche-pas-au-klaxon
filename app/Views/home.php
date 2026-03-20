@@ -10,9 +10,15 @@
 <body>
 
 <nav class="navbar navbar-light bg-white border-bottom px-4 d-flex justify-content-between">
-    <span class="navbar-brand fw-bold">Touche pas au klaxon</span>
-    <div class="d-flex align-items-center gap-3">
-        <?php if (isset($_SESSION['user'])): ?>
+    <a class="navbar-brand fw-bold" href="/touche-pas-au-klaxon/public/">Touche pas au klaxon</a>
+    <div class="d-flex align-items-center gap-2">
+        <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin'): ?>
+            <a href="/touche-pas-au-klaxon/public/admin/users"   class="btn btn-secondary btn-sm">Utilisateurs</a>
+            <a href="/touche-pas-au-klaxon/public/admin/agences" class="btn btn-secondary btn-sm">Agences</a>
+            <a href="/touche-pas-au-klaxon/public/admin/trajets" class="btn btn-secondary btn-sm">Trajets</a>
+            <span class="ms-2">Bonjour <?= htmlspecialchars($_SESSION['user']['prenom'] . ' ' . $_SESSION['user']['nom']) ?></span>
+            <a href="/touche-pas-au-klaxon/public/logout" class="btn btn-dark btn-sm">Déconnexion</a>
+        <?php elseif (isset($_SESSION['user'])): ?>
             <a href="/touche-pas-au-klaxon/public/trajet/create" class="btn btn-dark">Créer un trajet</a>
             <span>Bonjour <?= htmlspecialchars($_SESSION['user']['prenom'] . ' ' . $_SESSION['user']['nom']) ?></span>
             <a href="/touche-pas-au-klaxon/public/logout" class="btn btn-dark">Déconnexion</a>

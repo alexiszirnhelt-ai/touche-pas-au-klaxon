@@ -11,6 +11,13 @@ class Utilisateur
         $this->pdo = \Database::getConnection();
     }
 
+    public function getAll(): array
+    {
+        $stmt = $this->pdo->query('SELECT id, nom, prenom, telephone, email, role FROM utilisateur ORDER BY nom ASC');
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function findByEmail(string $email): array|false
     {
         $stmt = $this->pdo->prepare('SELECT * FROM utilisateur WHERE email = ?');
