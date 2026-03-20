@@ -1,13 +1,16 @@
 <?php
 
-require_once '../vendor/autoload.php';
-require_once '../config/database.php';
+session_start();
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../config/database.php';
 
 use Buki\Router\Router;
 
 $router = new Router([
+    'base_folder' => str_replace('\\', '/', __DIR__),
     'paths' => [
-        'controllers' => '../app/Controllers',
+        'controllers' => __DIR__ . '/../app/Controllers',
     ],
     'namespaces' => [
         'controllers' => 'App\Controllers',
