@@ -15,5 +15,9 @@
   ],
 "require": {
     "izniburak/router": "dev-master"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "2.2.x-dev",
+    "phpunit/phpunit": "11.5.x-dev"
   }
 }
