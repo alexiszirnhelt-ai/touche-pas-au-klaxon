@@ -4,13 +4,27 @@ namespace App\Controllers;
 
 use App\Models\Utilisateur;
 
+/**
+ * Contrôleur d'authentification — connexion et déconnexion des utilisateurs.
+ */
 class AuthController
 {
+    /**
+     * Affiche le formulaire de connexion.
+     *
+     * @return void
+     */
     public function showLogin(): void
     {
         require_once __DIR__ . '/../Views/login.php';
     }
 
+    /**
+     * Traite le formulaire de connexion.
+     * Vérifie l'email et le mot de passe, puis crée la session utilisateur.
+     *
+     * @return void
+     */
     public function login(): void
     {
         $email    = $_POST['email']    ?? '';
@@ -34,6 +48,11 @@ class AuthController
         require_once __DIR__ . '/../Views/login.php';
     }
 
+    /**
+     * Déconnecte l'utilisateur en détruisant la session.
+     *
+     * @return void
+     */
     public function logout(): void
     {
         session_destroy();
