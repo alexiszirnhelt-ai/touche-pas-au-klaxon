@@ -5,8 +5,16 @@ namespace App\Controllers;
 use App\Models\Agence;
 use App\Models\Trajet;
 
+/**
+ * Contrôleur Trajet — gestion des trajets de covoiturage.
+ */
 class TrajetController
 {
+    /**
+     * Redirige vers la page de connexion si l'utilisateur n'est pas authentifié.
+     *
+     * @return void
+     */
     private function requireAuth(): void
     {
         if (empty($_SESSION['user'])) {
@@ -15,6 +23,11 @@ class TrajetController
         }
     }
 
+    /**
+     * Affiche la page d'accueil avec les trajets disponibles.
+     *
+     * @return void
+     */
     public function index(): void
     {
         $model   = new Trajet();
@@ -23,15 +36,28 @@ class TrajetController
         require_once __DIR__ . '/../Views/home.php';
     }
 
+    /**
+     * Affiche le formulaire de création d'un trajet.
+     * Récupère les informations de l'utilisateur connecté pour les pré-renseigner.
+     *
+     * @return void
+     */
     public function create(): void
     {
         $this->requireAuth();
 
-        $agences = (new Agence())->getAll();
+        $agences     = (new Agence())->getAll();
+        $utilisateur = (new \App\Models\Utilisateur())->getById((int) $_SESSION['user']['id']);
 
         require_once __DIR__ . '/../Views/trajet/create.php';
     }
 
+    /**
+     * Traite le formulaire de création et insère le trajet en base.
+     * Effectue des contrôles de cohérence avant l'insertion.
+     *
+     * @return void
+     */
     public function store(): void
     {
         $this->requireAuth();
@@ -57,7 +83,8 @@ class TrajetController
         }
 
         if (!empty($errors)) {
-            $agences = (new Agence())->getAll();
+            $agences     = (new Agence())->getAll();
+            $utilisateur = (new \App\Models\Utilisateur())->getById((int) $_SESSION['user']['id']);
             require_once __DIR__ . '/../Views/trajet/create.php';
             return;
         }
@@ -77,6 +104,13 @@ class TrajetController
         exit;
     }
 
+    /**
+     * Affiche le formulaire de modification d'un trajet.
+     * Vérifie que l'utilisateur connecté est bien l'auteur du trajet.
+     *
+     * @param int $id Identifiant du trajet
+     * @return void
+     */
     public function edit(int $id): void
     {
         $this->requireAuth();
@@ -84,7 +118,7 @@ class TrajetController
         $model  = new Trajet();
         $trajet = $model->getById($id);
 
-        if (!$trajet || $trajet['utilisateur_id'] !== $_SESSION['user']['id']) {
+        if (!$trajet || (int) $trajet['utilisateur_id'] !== (int) $_SESSION['user']['id']) {
             header('Location: /touche-pas-au-klaxon/public/');
             exit;
         }
@@ -94,6 +128,13 @@ class TrajetController
         require_once __DIR__ . '/../Views/trajet/edit.php';
     }
 
+    /**
+     * Traite le formulaire de modification et met à jour le trajet en base.
+     * Vérifie que l'utilisateur connecté est bien l'auteur du trajet.
+     *
+     * @param int $id Identifiant du trajet
+     * @return void
+     */
     public function update(int $id): void
     {
         $this->requireAuth();
@@ -101,7 +142,7 @@ class TrajetController
         $model  = new Trajet();
         $trajet = $model->getById($id);
 
-        if (!$trajet || $trajet['utilisateur_id'] !== $_SESSION['user']['id']) {
+        if (!$trajet || (int) $trajet['utilisateur_id'] !== (int) $_SESSION['user']['id']) {
             header('Location: /touche-pas-au-klaxon/public/');
             exit;
         }
@@ -146,6 +187,13 @@ class TrajetController
         exit;
     }
 
+    /**
+     * Supprime un trajet.
+     * Vérifie que l'utilisateur connecté est bien l'auteur du trajet.
+     *
+     * @param int $id Identifiant du trajet
+     * @return void
+     */
     public function delete(int $id): void
     {
         $this->requireAuth();
@@ -153,7 +201,7 @@ class TrajetController
         $model  = new Trajet();
         $trajet = $model->getById($id);
 
-        if (!$trajet || $trajet['utilisateur_id'] !== $_SESSION['user']['id']) {
+        if (!$trajet || (int) $trajet['utilisateur_id'] !== (int) $_SESSION['user']['id']) {
             header('Location: /touche-pas-au-klaxon/public/');
             exit;
         }

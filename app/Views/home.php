@@ -73,7 +73,7 @@
                             data-bs-toggle="modal" data-bs-target="#modal-<?= (int) $trajet['id'] ?>">
                         <i class="bi bi-eye"></i>
                     </button>
-                    <?php if ($_SESSION['user']['id'] === $trajet['utilisateur_id']): ?>
+                    <?php if ((int) $_SESSION['user']['id'] === (int) $trajet['utilisateur_id']): ?>
                         <a href="/touche-pas-au-klaxon/public/trajet/edit/<?= (int) $trajet['id'] ?>" class="ms-1" title="Modifier"><i class="bi bi-pencil-square"></i></a>
                         <form action="/touche-pas-au-klaxon/public/trajet/delete/<?= (int) $trajet['id'] ?>" method="POST" class="d-inline ms-1">
                             <button type="submit" class="btn btn-link p-0" title="Supprimer"><i class="bi bi-trash text-danger"></i></button>
@@ -83,29 +83,33 @@
                 <?php endif; ?>
             </tr>
 
-            <!-- Modale trajet #<?= (int) $trajet['id'] ?> -->
-            <div class="modal fade" id="modal-<?= (int) $trajet['id'] ?>" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <button type="button" class="btn-close float-end" data-bs-dismiss="modal"></button>
-                            <h5 class="mb-3"><?= htmlspecialchars($trajet['agence_depart']) ?> → <?= htmlspecialchars($trajet['agence_arrivee']) ?></h5>
-                            <p><strong>Auteur :</strong> <?= htmlspecialchars($trajet['user_prenom'] . ' ' . $trajet['user_nom']) ?></p>
-                            <p><strong>Téléphone :</strong> <?= htmlspecialchars($trajet['user_telephone']) ?></p>
-                            <p><strong>Email :</strong> <?= htmlspecialchars($trajet['user_email']) ?></p>
-                            <p><strong>Nombre total de places :</strong> <?= (int) $trajet['places_total'] ?></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <?php endforeach; ?>
         </tbody>
     </table>
 </div>
+
+<?php if (isset($_SESSION['user'])): ?>
+<?php foreach ($trajets as $trajet): ?>
+<!-- Modale trajet #<?= (int) $trajet['id'] ?> -->
+<div class="modal fade" id="modal-<?= (int) $trajet['id'] ?>" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="btn-close float-end" data-bs-dismiss="modal"></button>
+                <h5 class="mb-3"><?= htmlspecialchars($trajet['agence_depart']) ?> → <?= htmlspecialchars($trajet['agence_arrivee']) ?></h5>
+                <p><strong>Auteur :</strong> <?= htmlspecialchars($trajet['user_prenom'] . ' ' . $trajet['user_nom']) ?></p>
+                <p><strong>Téléphone :</strong> <?= htmlspecialchars($trajet['user_telephone']) ?></p>
+                <p><strong>Email :</strong> <?= htmlspecialchars($trajet['user_email']) ?></p>
+                <p><strong>Nombre total de places :</strong> <?= (int) $trajet['places_total'] ?></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php endforeach; ?>
+<?php endif; ?>
 
 <footer class="text-center text-muted mt-5 mb-3">
     &copy; 2024 - CENEF - MVC PHP
