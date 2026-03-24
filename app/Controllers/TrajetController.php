@@ -38,6 +38,7 @@ class TrajetController
 
     /**
      * Affiche le formulaire de création d'un trajet.
+     * Récupère les informations de l'utilisateur connecté pour les pré-renseigner.
      *
      * @return void
      */
@@ -45,7 +46,8 @@ class TrajetController
     {
         $this->requireAuth();
 
-        $agences = (new Agence())->getAll();
+        $agences     = (new Agence())->getAll();
+        $utilisateur = (new \App\Models\Utilisateur())->getById((int) $_SESSION['user']['id']);
 
         require_once __DIR__ . '/../Views/trajet/create.php';
     }
