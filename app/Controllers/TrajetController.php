@@ -83,7 +83,8 @@ class TrajetController
         }
 
         if (!empty($errors)) {
-            $agences = (new Agence())->getAll();
+            $agences     = (new Agence())->getAll();
+            $utilisateur = (new \App\Models\Utilisateur())->getById((int) $_SESSION['user']['id']);
             require_once __DIR__ . '/../Views/trajet/create.php';
             return;
         }
