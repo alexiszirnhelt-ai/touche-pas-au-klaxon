@@ -28,6 +28,20 @@ class Utilisateur
     }
 
     /**
+     * Retourne un utilisateur par son identifiant.
+     *
+     * @param int $id
+     * @return array<string, mixed>|false
+     */
+    public function getById(int $id): array|false
+    {
+        $stmt = $this->pdo->prepare('SELECT id, nom, prenom, telephone, email, role FROM utilisateur WHERE id = ?');
+        $stmt->execute([$id]);
+
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Recherche un utilisateur par son adresse email.
      *
      * @param string $email Adresse email

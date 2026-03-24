@@ -29,6 +29,30 @@
         </div>
     <?php endif; ?>
 
+    <div class="card mb-4">
+        <div class="card-body">
+            <h6 class="card-subtitle mb-3 text-muted">Personne à contacter</h6>
+            <div class="row g-2">
+                <div class="col-6">
+                    <label class="form-label">Nom</label>
+                    <input type="text" class="form-control" value="<?= htmlspecialchars($utilisateur['nom'] ?? '') ?>" readonly>
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Prénom</label>
+                    <input type="text" class="form-control" value="<?= htmlspecialchars($utilisateur['prenom'] ?? '') ?>" readonly>
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Téléphone</label>
+                    <input type="text" class="form-control" value="<?= htmlspecialchars($utilisateur['telephone'] ?? '') ?>" readonly>
+                </div>
+                <div class="col-6">
+                    <label class="form-label">Email</label>
+                    <input type="text" class="form-control" value="<?= htmlspecialchars($utilisateur['email'] ?? '') ?>" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <form action="/touche-pas-au-klaxon/public/trajet/create" method="POST">
         <div class="mb-3">
             <label for="agence_depart_id" class="form-label">Agence de départ</label>
