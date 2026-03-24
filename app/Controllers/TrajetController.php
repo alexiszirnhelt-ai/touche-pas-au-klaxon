@@ -84,7 +84,7 @@ class TrajetController
         $model  = new Trajet();
         $trajet = $model->getById($id);
 
-        if (!$trajet || $trajet['utilisateur_id'] !== $_SESSION['user']['id']) {
+        if (!$trajet || (int) $trajet['utilisateur_id'] !== (int) $_SESSION['user']['id']) {
             header('Location: /touche-pas-au-klaxon/public/');
             exit;
         }
@@ -101,7 +101,7 @@ class TrajetController
         $model  = new Trajet();
         $trajet = $model->getById($id);
 
-        if (!$trajet || $trajet['utilisateur_id'] !== $_SESSION['user']['id']) {
+        if (!$trajet || (int) $trajet['utilisateur_id'] !== (int) $_SESSION['user']['id']) {
             header('Location: /touche-pas-au-klaxon/public/');
             exit;
         }
@@ -153,7 +153,7 @@ class TrajetController
         $model  = new Trajet();
         $trajet = $model->getById($id);
 
-        if (!$trajet || $trajet['utilisateur_id'] !== $_SESSION['user']['id']) {
+        if (!$trajet || (int) $trajet['utilisateur_id'] !== (int) $_SESSION['user']['id']) {
             header('Location: /touche-pas-au-klaxon/public/');
             exit;
         }
